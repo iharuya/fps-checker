@@ -1,18 +1,18 @@
-import {Stats} from "./Stats.js"
+import { Stats } from "./Stats.js"
 
 class FPSMetric {
   constructor(metricId, updateFunction) {
     this.metricId = metricId
-    this.counter = 0;
-    this.times = [];
-    const $row = document.getElementById(metricId);
+    this.counter = 0
+    this.times = []
+    const $row = document.getElementById(metricId)
     this.doms = {
       root: $row,
-      fps: $row?.querySelector('.fps'),
-      count: $row?.querySelector('.count'),  
+      fps: $row?.querySelector(".fps"),
+      count: $row?.querySelector(".count")
     }
     if (!this.checkIfAllDomsArePresent()) {
-      throw new Error('Some DOMs are not present');
+      throw new Error("Some DOMs are not present")
     }
 
     // this.startTime = performance.now();
@@ -25,56 +25,53 @@ class FPSMetric {
     // })
 
     updateFunction(() => {
-      const now = performance.now();
+      const now = performance.now()
       while (this.times.length > 0 && this.times[0] <= now - 1000) {
-        this.times.shift();
+        this.times.shift()
       }
-      this.times.push(now);
-      const fps = this.times.length;
-      this.doms.fps.textContent = fps;
-      this.counter++; 
-      this.doms.count.textContent = this.counter;
-    });
-  } 
-
-  checkIfAllDomsArePresent() {
-    return Object.values(this.doms).every(Boolean);
+      this.times.push(now)
+      const fps = this.times.length
+      this.doms.fps.textContent = fps
+      this.counter++
+      this.doms.count.textContent = this.counter
+    })
   }
 
+  checkIfAllDomsArePresent() {
+    return Object.values(this.doms).every(Boolean)
+  }
 }
 
-
 window.onload = () => {
-  new FPSMetric('set-interval', setInterval);
-  new FPSMetric('set-timeout', (callback) => {
+  new FPSMetric("set-interval", setInterval)
+  new FPSMetric("set-timeout", (callback) => {
     const loop = () => {
-      callback();
-      setTimeout(loop, 0); 
+      callback()
+      setTimeout(loop, 0)
     }
-    loop();
-  });
-  new FPSMetric('request-animation-frame', (callback) => {
+    loop()
+  })
+  new FPSMetric("request-animation-frame", (callback) => {
     const loop = () => {
-      callback();
-      requestAnimationFrame(loop);
+      callback()
+      requestAnimationFrame(loop)
     }
-    loop();
-  });
+    loop()
+  })
 
-
-  var stats = new Stats();
-  stats.showPanel(0);
+  var stats = new Stats()
+  stats.showPanel(0)
   const style = stats.dom.style
   style.cssText = ""
   style.cursor = "pointer"
-  
-  const wrapper = document.getElementById('stats');
-  wrapper.appendChild(stats.dom);
-  function animate() {
-    stats.begin();
 
-    stats.end();
-    requestAnimationFrame( animate );
+  const wrapper = document.getElementById("stats")
+  wrapper.appendChild(stats.dom)
+  function animate() {
+    stats.begin()
+
+    stats.end()
+    requestAnimationFrame(animate)
   }
-  requestAnimationFrame( animate );
+  requestAnimationFrame(animate)
 }
