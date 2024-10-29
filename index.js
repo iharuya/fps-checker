@@ -1,3 +1,5 @@
+import {Stats} from "./Stats.js"
+
 class FPSMetric {
   constructor(metricId, updateFunction) {
     this.metricId = metricId
@@ -41,6 +43,7 @@ class FPSMetric {
 
 }
 
+
 window.onload = () => {
   new FPSMetric('set-interval', setInterval);
   new FPSMetric('set-timeout', (callback) => {
@@ -57,4 +60,21 @@ window.onload = () => {
     }
     loop();
   });
+
+
+  var stats = new Stats();
+  stats.showPanel(0);
+  const style = stats.dom.style
+  style.cssText = ""
+  style.cursor = "pointer"
+  
+  const wrapper = document.getElementById('stats');
+  wrapper.appendChild(stats.dom);
+  function animate() {
+    stats.begin();
+
+    stats.end();
+    requestAnimationFrame( animate );
+  }
+  requestAnimationFrame( animate );
 }

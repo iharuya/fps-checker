@@ -53,3 +53,10 @@ tfoot th {
 tfoot td {
   font-weight: bold;
 }
+
+
+#stats {
+  position: relative;
+  display: flex;
+  margin-bottom: 0.5rem;
+}
